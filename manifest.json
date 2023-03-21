@@ -1,0 +1,19 @@
+{
+  "name": "LeetAssist",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Displays hints for LeetCode problems from Firestore.",
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/problems/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": ["firebase-app.js", "firebase-firestore.js"],
+  "permissions": ["activeTab", "storage", "https://www.googleapis.com/"],
+  "content_security_policy": "script-src 'self' https://www.gstatic.com https://www.googleapis.com; object-src 'self'"
+}
