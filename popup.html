@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>LeetAssist</title>
+    <style>
+      body { 
+        width: 300px; 
+        height: 300px; 
+        text-align: center;     
+        display: flex;
+        flex-direction: column;
+      }
+      #heading {
+        font-size: 22px; 
+        margin: 0 0 10px; 
+      }
+      #paragraph { 
+        margin: 0;
+        font-size: medium;
+      }
+      .hint { 
+        margin-bottom: 20px;
+       }
+      .problemId { 
+        font-weight: bold; 
+      }
+      #getHintButton{
+        align-self: center;
+        margin-top: inherit;
+      }
+      .hint-up-button{
+        margin-left: 5px;
+      }
+      .hint-down-button{
+        margin-left: 5px;
+
+      }
+      #hintContainer {
+        margin-top: inherit;
+        font-size: medium;
+        text-align: left;
+      }
+      .hint-text {
+        margin-bottom: 5px;
+      }
+      .hint-score {
+        /* font-size: small; */
+        margin-left: 5px;
+        color: green;
+        font-weight: 500;
+      }
+      #addHintButton{
+        width: fit-content;
+    align-self: center;
+    margin-top: inherit;
+      }
+      #loginButton{
+        margin-top: inherit;
+    width: fit-content;
+    align-self: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id = "heading">LeetAssist</h1>
+    <p id = "paragraph">Click on "Get Hint" to get hint</p>
+    <button id="getHintButton">Get Hint</button>
+    <button id="loginButton">Login</button>
+
+    <div id="hintContainer"></div>
+    <button id="addHintButton">Add Hint</button>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
+
+    <!-- Your local Firebase App and Firestore scripts -->
+    <script src="firebase-app.js"></script>
+    <script src="firebase-firestore.js"></script>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
