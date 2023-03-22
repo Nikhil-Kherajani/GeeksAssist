@@ -1,11 +1,11 @@
 {
-  "name": "LeetAssist",
+  "name": "GeeksAssist",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "Displays hints for LeetCode problems from Firestore.",
+  "description": "Displays hints and prerequisites question for GeeksforGeeks problems from Firestore.",
   "content_scripts": [
     {
-      "matches": ["https://leetcode.com/problems/*"],
+      "matches": ["https://practice.geeksforgeeks.org/problems/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }

@@ -1,7 +1,7 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-  authDomain: "leetassist.firebaseapp.com",
-  projectId: "leetassist",
+  apiKey: "AIzaSyC7xzgLwOrLmYc48B2pbWQ_yqi9GSu0p3o",
+  authDomain: "geeksassist-60130.firebaseapp.com",
+  projectId: "geeksassist-60130",
   // Add other Firebase config options as needed
 };
 
@@ -9,9 +9,26 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+let hintupdownbuttondisable = false,
+  prerequisiteupdownbuttondisable = false;
 
 const heading = document.getElementById("heading");
 const loginButton = document.getElementById("loginButton");
+// for Prerequisites
+const getPrerequisitesButton = document.getElementById(
+  "getPrerequisitesButton"
+);
+const prerequisitesContainer = document.getElementById(
+  "prerequisitesContainer"
+);
+const addPrerequisitesButton = document.getElementById(
+  "addPrerequisitesButton"
+);
+const paragraph_Prerequisites = document.getElementById(
+  "paragraph_Prerequisites"
+);
+
+// for hints
 const getHintButton = document.getElementById("getHintButton");
 const hintContainer = document.getElementById("hintContainer");
 const addHintButton = document.getElementById("addHintButton");
@@ -22,11 +39,15 @@ function hideElements() {
   getHintButton.style.display = "none";
   hintContainer.style.display = "none";
   addHintButton.style.display = "none";
+  getPrerequisitesButton.style.display = "none";
+  prerequisitesContainer.style.display = "none";
+  addPrerequisitesButton.style.display = "none";
+  paragraph_Prerequisites.style.display = "none";
 }
 
 function showLogin() {
   hideElements();
-  heading.textContent = "LeetAssist";
+  heading.textContent = "GeeksAssist";
   paragraph.textContent =
     "Please login to use this extension, Don't worry it is just an anonymous login we don't ask for any info.";
 
@@ -34,58 +55,43 @@ function showLogin() {
 }
 
 function showGetHint() {
-  hideElements();
-  heading.textContent = "LeetAssist";
+  // hideElements();
+  loginButton.style.display = "none";
+  addHintButton.style.display = "none";
+
+  heading.textContent = "GeeksAssist";
   hintContainer.style.display = "block";
   getHintButton.style.display = "block";
   paragraph.textContent = "Click the 'Get Hint' button to view hints";
-  // hintContainer.textContent = "Click on Get Hint button to get hints.";
   hintContainer.textContent = "";
 }
 
-// function showHint(hints) {
-//   hideElements();
-//   heading.textContent = "LeetAssist";
-//   hintContainer.style.display = "block";
-//   addHintButton.style.display = "block";
-//   paragraph.textContent =
-//     "If you would like to contribute, you can add a hint.";
-//   console.log(hints);
-//   if (hints && hints.length > 0) {
-//     hints.forEach((hint, index) => {
-//       const hintDiv = document.createElement("div");
-//       hintDiv.classList.add("hint");
-//       const hintNumber = document.createElement("span");
-//       hintNumber.classList.add("hint-number");
-//       hintNumber.textContent = `${index + 1}.`;
-//       const hintText = document.createElement("span");
-//       hintText.classList.add("hint-text");
-//       hintText.textContent = hint.text;
-//       const hintScore = document.createElement("span");
-//       hintScore.classList.add("hint-score");
-//       hintScore.textContent = hint.score;
-//       hintDiv.appendChild(hintNumber);
-//       hintDiv.appendChild(hintText);
-//       hintDiv.appendChild(hintScore);
-//       hintContainer.appendChild(hintDiv);
-//     });
-//   } else {
-//     hintContainer.textContent = "Sorry, no hint available.";
-//   }
-// }
+function showGetPrerequisite() {
+  // hideElements();
+  loginButton.style.display = "none";
+  addPrerequisitesButton.style.display = "none";
+  paragraph_Prerequisites.style.display = "block";
+
+  heading.textContent = "GeeksAssist";
+  prerequisitesContainer.style.display = "block";
+  getPrerequisitesButton.style.display = "block";
+  paragraph_Prerequisites.textContent =
+    "Click the 'Get Prerequisites' button to view Prerequisites Questions";
+  prerequisitesContainer.textContent = "";
+}
 
 function showHint(hints) {
-  hideElements();
-  heading.textContent = "LeetAssist";
+  // hideElements();
+  loginButton.style.display = "none";
+  getHintButton.style.display = "none";
+
+  heading.textContent = "GeeksAssist";
   hintContainer.style.display = "block";
   addHintButton.style.display = "block";
   paragraph.textContent =
     "If you would like to contribute, you can add a hint.";
-  console.log(hints);
   if (hints && hints.length > 0) {
     hints.forEach((hint, index) => {
-      let oneup = false,
-        onedown = false;
       const hintDiv = document.createElement("div");
       hintDiv.classList.add("hint");
 
@@ -102,28 +108,25 @@ function showHint(hints) {
       hintScore.textContent = hint.score;
 
       const upButton = document.createElement("button");
-      // upButton.style = "margin : 10px";
       upButton.classList.add("hint-up-button");
-      upButton.textContent = "+";
+      upButton.textContent = "⬆️";
       upButton.addEventListener("click", () => {
-        updateHintScore(hint, parseInt(hint.score) + 1);
-        if (!oneup) {
-          hintScore.textContent = parseInt(hint.score) + 1;
-          upButton.disabled = true;
-          oneup = true;
-        }
+        hintupdownbuttondisable = updateHintScore(
+          hint,
+          parseInt(hint.score) + 1,
+          hintScore
+        );
       });
 
       const downButton = document.createElement("button");
       downButton.classList.add("hint-down-button");
-      downButton.textContent = "-";
+      downButton.textContent = "⬇️";
       downButton.addEventListener("click", () => {
-        updateHintScore(hint, parseInt(hint.score) - 1);
-        if (!onedown) {
-          hintScore.textContent = parseInt(hint.score) - 1;
-          downButton.disabled = true;
-          onedown = true;
-        }
+        hintupdownbuttondisable = updateHintScore(
+          hint,
+          parseInt(hint.score) - 1,
+          hintScore
+        );
       });
 
       hintDiv.appendChild(hintNumber);
@@ -139,66 +142,152 @@ function showHint(hints) {
   }
 }
 
-function updateHintScore(hint, newScore) {
+function showPrerequisite(prerequisites) {
+  // hideElements();
+  loginButton.style.display = "none";
+  getPrerequisitesButton.style.display = "none";
+
+  heading.textContent = "GeeksAssist";
+  prerequisitesContainer.style.display = "block";
+  addPrerequisitesButton.style.display = "block";
+  paragraph_Prerequisites.textContent =
+    "If you would like to contribute, you can add a Prerequisite Ques.";
+  if (prerequisites && prerequisites.length > 0) {
+    prerequisites.forEach((Prerequisite, index) => {
+      const prerequisitediv = document.createElement("div");
+      prerequisitediv.classList.add("prerequisite");
+
+      const prerequisiteNumber = document.createElement("span");
+      prerequisiteNumber.classList.add("prerequisite-number");
+      prerequisiteNumber.textContent = `${index + 1}.`;
+
+      const prerequisiteText = document.createElement("span");
+      prerequisiteText.classList.add("prerequisite-text");
+      prerequisiteText.textContent = Prerequisite.text;
+
+      const prerequisiteScore = document.createElement("span");
+      prerequisiteScore.classList.add("prerequisite-score");
+      prerequisiteScore.textContent = Prerequisite.score;
+
+      const upButton = document.createElement("button");
+      upButton.classList.add("prerequisite-up-button");
+      upButton.textContent = "↑";
+      upButton.addEventListener("click", () => {
+        prerequisiteupdownbuttondisable = updatePrerequisiteScore(
+          Prerequisite,
+          parseInt(Prerequisite.score) + 1,
+          prerequisiteScore
+        );
+      });
+
+      const downButton = document.createElement("button");
+      downButton.classList.add("prerequisite-down-button");
+      downButton.textContent = "↓";
+      downButton.addEventListener("click", () => {
+        prerequisiteupdownbuttondisable = updatePrerequisiteScore(
+          Prerequisite,
+          parseInt(Prerequisite.score) - 1,
+          prerequisiteScore
+        );
+      });
+
+      prerequisitediv.appendChild(prerequisiteNumber);
+      prerequisitediv.appendChild(prerequisiteText);
+      prerequisitediv.appendChild(prerequisiteScore);
+      prerequisitediv.appendChild(upButton);
+      prerequisitediv.appendChild(downButton);
+
+      prerequisitesContainer.appendChild(prerequisitediv);
+    });
+  } else {
+    prerequisitesContainer.textContent = "Sorry, no Prerequisite available.";
+  }
+}
+
+function updatePrerequisiteScore(prerequisite, newScore, button) {
+  const userId = auth.currentUser.uid;
   const tabsQuery = { active: true, currentWindow: true };
   chrome.tabs.query(tabsQuery, (tabs) => {
     const url = tabs[0].url;
-    console.log(url);
 
-    const regex = /\/problems\/(.+)\//;
+    const regex = /\/problems\/([-\w]+)\//;
     const match = url.match(regex);
     const problemId = match ? match[1] : null;
-    console.log(problemId);
+
+    const prerequisiteRef = db.collection("prerequisites").doc(problemId);
+
+    // Retrieve the userids array from the Firestore document
+    prerequisiteRef.get().then((doc) => {
+      if (doc.exists) {
+        const userids = doc.data().userIds || [];
+
+        // Check if the prerequisite's userid matches any of the values in the userids array
+        if (userids.includes(userId)) {
+          alert("You have already voted");
+          return true;
+        }
+
+        // Update the score for the prerequisite
+        const updatedprerequisites = prerequisiteRef
+          .update({
+            prerequisites:
+              firebase.firestore.FieldValue.arrayRemove(prerequisite),
+          })
+          .then(() => {
+            prerequisite.score = newScore;
+            const updatedprerequisites = prerequisiteRef.update({
+              prerequisites:
+                firebase.firestore.FieldValue.arrayUnion(prerequisite),
+              userIds: firebase.firestore.FieldValue.arrayUnion(userId), // Add the hint's userid to the userids array
+            });
+            button.textContent = newScore;
+            return false;
+          });
+      }
+    });
+  });
+}
+
+function updateHintScore(hint, newScore, button) {
+  const userId = auth.currentUser.uid;
+  const tabsQuery = { active: true, currentWindow: true };
+  chrome.tabs.query(tabsQuery, (tabs) => {
+    const url = tabs[0].url;
+
+    const regex = /\/problems\/([-\w]+)\//;
+    const match = url.match(regex);
+    const problemId = match ? match[1] : null;
 
     const hintRef = db.collection("hints").doc(problemId);
-    const updatedHints = hintRef
-      .update({
-        hints: firebase.firestore.FieldValue.arrayRemove(hint),
-      })
-      .then(() => {
-        hint.score = newScore;
-        const updatedHints = hintRef.update({
-          hints: firebase.firestore.FieldValue.arrayUnion(hint),
-        });
-        console.log(updatedHints);
-        // showHint(hint);
-        // const problemId = getProblemIdFromUrl();
-        // const tabsQuery = { active: true, currentWindow: true };
-        // chrome.tabs.query(tabsQuery, (tabs) => {
-        //   const url = tabs[0].url;
-        //   console.log(url);
 
-        //   const regex = /\/problems\/(.+)\//;
-        //   const match = url.match(regex);
-        //   const problemId = match ? match[1] : null;
-        //   console.log(problemId);
-        //   // return problemId;
-        //   if (problemId) {
-        //     const hintRef = db.collection("hints").doc(problemId);
-        //     console.log(problemId);
-        //     hintRef
-        //       .get()
-        //       .then((doc) => {
-        //         console.log(doc);
-        //         if (doc.exists) {
-        //           console.log(doc);
-        //           const hints = doc.data().hints;
-        //           showHint(hints);
-        //         } else {
-        //           showHint(null);
-        //         }
-        //       })
-        //       .catch((error) => {
-        //         console.error("Error getting hint:", error);
-        //       });
-        //   } else {
-        //     hintContainer.innerHTML =
-        //       "Please navigate to a LeetCode problem page to use this extension.";
-        //   }
-        // });
+    // Retrieve the userids array from the Firestore document
+    hintRef.get().then((doc) => {
+      if (doc.exists) {
+        const userids = doc.data().userIds || [];
 
-        //
-      });
+        // Check if the hint's userid matches any of the values in the userids array
+        if (userids.includes(userId)) {
+          alert("You have already voted");
+          return true;
+        }
+
+        // Update the score for the hint
+        const updatedHints = hintRef
+          .update({
+            hints: firebase.firestore.FieldValue.arrayRemove(hint),
+          })
+          .then(() => {
+            hint.score = newScore;
+            const updatedHints = hintRef.update({
+              hints: firebase.firestore.FieldValue.arrayUnion(hint),
+              userIds: firebase.firestore.FieldValue.arrayUnion(userId), // Add the hint's userid to the userids array
+            });
+
+            button.textContent = newScore;
+            return false;
+          });
+      }
+    });
   });
 }
 
@@ -215,26 +304,133 @@ function addHint() {
     const tabsQuery = { active: true, currentWindow: true };
     chrome.tabs.query(tabsQuery, (tabs) => {
       const url = tabs[0].url;
-      console.log(url);
 
-      const regex = /\/problems\/(.+)\//;
+      const regex = /\/problems\/([-\w]+)\//;
       const match = url.match(regex);
       const problemId = match ? match[1] : null;
-      console.log(problemId);
       const hintRef = db.collection("hints").doc(problemId);
-      hintRef
-        .update({
-          hints: firebase.firestore.FieldValue.arrayUnion(hint),
-        })
-        .then(() => {
-          alert("Hint added successfully!");
-        })
-        .catch((error) => {
-          console.error("Error adding hint:", error);
-        });
-      // return problemId;
+      hintRef.get().then((doc) => {
+        if (doc.exists) {
+          const hints = doc.data().hints;
+          if (hints && hints.length > 0) {
+            const existingUserIds = hints.map((hint) => hint.userId);
+            if (existingUserIds.includes(userId)) {
+              alert(
+                "It is not possible to include an additional hint, as you have already added contributed for this question. Thank you!"
+              );
+            } else {
+              hintRef
+                .update({
+                  hints: firebase.firestore.FieldValue.arrayUnion(hint),
+                })
+                .then(() => {
+                  alert(
+                    "Hint added successfully! Thank you for your contribution :)"
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error adding hint:", error);
+                });
+            }
+          } else {
+            hintRef
+              .set({ hints: [hint] })
+              .then(() => {
+                alert(
+                  "Hint added successfully! Thank you for your contribution :)"
+                );
+              })
+              .catch((error) => {
+                console.error("Error adding hint:", error);
+              });
+          }
+        } else {
+          hintRef
+            .set({ hints: [hint] })
+            .then(() => {
+              alert(
+                "Hint added successfully! Thank you for your contribution :)"
+              );
+            })
+            .catch((error) => {
+              console.error("Error adding hint:", error);
+            });
+        }
+      });
     });
-    // const problemId = getProblemIdFromUrl();
+  }
+}
+
+function addPrerequisite() {
+  const prerequisiteText = prompt("Enter prerequisite:");
+  if (prerequisiteText) {
+    const userId = auth.currentUser.uid;
+    const prerequisite = {
+      text: prerequisiteText,
+      score: 0,
+      userId: userId,
+    };
+
+    const tabsQuery = { active: true, currentWindow: true };
+    chrome.tabs.query(tabsQuery, (tabs) => {
+      const url = tabs[0].url;
+
+      const regex = /\/problems\/([-\w]+)\//;
+      const match = url.match(regex);
+      const problemId = match ? match[1] : null;
+      const hintRef = db.collection("prerequisites").doc(problemId);
+      hintRef.get().then((doc) => {
+        if (doc.exists) {
+          const prerequisites = doc.data().prerequisites;
+          if (prerequisites && prerequisites.length > 0) {
+            const existingUserIds = prerequisites.map(
+              (prerequisite) => prerequisite.userId
+            );
+            if (existingUserIds.includes(userId)) {
+              alert(
+                "It is not possible to include an additional prerequisite, as you have already added contributed for this question. Thank you!"
+              );
+            } else {
+              hintRef
+                .update({
+                  prerequisites:
+                    firebase.firestore.FieldValue.arrayUnion(prerequisite),
+                })
+                .then(() => {
+                  alert(
+                    "prerequisite added successfully! Thank you for your contribution :)"
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error adding prerequisite:", error);
+                });
+            }
+          } else {
+            hintRef
+              .set({ prerequisites: [prerequisite] })
+              .then(() => {
+                alert(
+                  "prerequisite added successfully! Thank you for your contribution :)"
+                );
+              })
+              .catch((error) => {
+                console.error("Error adding prerequisite:", error);
+              });
+          }
+        } else {
+          hintRef
+            .set({ prerequisites: [prerequisite] })
+            .then(() => {
+              alert(
+                "prerequisite added successfully! Thank you for your contribution :)"
+              );
+            })
+            .catch((error) => {
+              console.error("Error adding prerequisite:", error);
+            });
+        }
+      });
+    });
   }
 }
 
@@ -242,12 +438,10 @@ function getProblemIdFromUrl() {
   const tabsQuery = { active: true, currentWindow: true };
   chrome.tabs.query(tabsQuery, (tabs) => {
     const url = tabs[0].url;
-    console.log(url);
 
-    const regex = /\/problems\/(.+)\//;
+    const regex = /\/problems\/([-\w]+)\//;
     const match = url.match(regex);
     const problemId = match ? match[1] : null;
-    console.log(problemId);
     return problemId;
   });
 }
@@ -255,28 +449,24 @@ function getProblemIdFromUrl() {
 auth.onAuthStateChanged((user) => {
   if (user) {
     showGetHint();
+    showGetPrerequisite();
 
     getHintButton.addEventListener("click", () => {
       // const problemId = getProblemIdFromUrl();
       const tabsQuery = { active: true, currentWindow: true };
       chrome.tabs.query(tabsQuery, (tabs) => {
         const url = tabs[0].url;
-        console.log(url);
 
-        const regex = /\/problems\/(.+)\//;
+        const regex = /\/problems\/([-\w]+)\//;
         const match = url.match(regex);
         const problemId = match ? match[1] : null;
-        console.log(problemId);
         // return problemId;
         if (problemId) {
           const hintRef = db.collection("hints").doc(problemId);
-          console.log(problemId);
           hintRef
             .get()
             .then((doc) => {
-              console.log(doc);
               if (doc.exists) {
-                console.log(doc);
                 const hints = doc.data().hints;
                 showHint(hints);
               } else {
@@ -288,13 +478,49 @@ auth.onAuthStateChanged((user) => {
             });
         } else {
           hintContainer.innerHTML =
-            "Please navigate to a LeetCode problem page to use this extension.";
+            "Please navigate to a GeeksforGeeks problem page to use this extension.";
         }
       });
     });
 
     addHintButton.addEventListener("click", () => {
       addHint();
+    });
+
+    getPrerequisitesButton.addEventListener("click", () => {
+      // const problemId = getProblemIdFromUrl();
+      const tabsQuery = { active: true, currentWindow: true };
+      chrome.tabs.query(tabsQuery, (tabs) => {
+        const url = tabs[0].url;
+
+        const regex = /\/problems\/([-\w]+)\//;
+        const match = url.match(regex);
+        const problemId = match ? match[1] : null;
+        // return problemId;
+        if (problemId) {
+          const hintRef = db.collection("prerequisites").doc(problemId);
+          hintRef
+            .get()
+            .then((doc) => {
+              if (doc.exists) {
+                const prerequisites = doc.data().prerequisites;
+                showPrerequisite(prerequisites);
+              } else {
+                showPrerequisite(null);
+              }
+            })
+            .catch((error) => {
+              console.error("Error getting hint:", error);
+            });
+        } else {
+          prerequisitesContainer.innerHTML =
+            "Please navigate to a GeeksforGeeks problem page to use this extension.";
+        }
+      });
+    });
+
+    addPrerequisitesButton.addEventListener("click", () => {
+      addPrerequisite();
     });
   } else {
     showLogin();
@@ -314,215 +540,3 @@ loginButton.addEventListener("click", () => {
       console.error("Error logging in:", error);
     });
 });
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-//   authDomain: "leetassist.firebaseapp.com",
-//   projectId: "leetassist",
-// };
-// firebase.initializeApp(firebaseConfig);
-
-// const auth = firebase.auth();
-// const getHintButton = document.getElementById("getHintButton");
-// const loginButton = document.getElementById("loginButton");
-// const hintContainer = document.getElementById("hintContainer");
-
-// chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//   const url = tabs[0].url;
-//   console.log(url);
-
-//   const regex = /\/problems\/(.+)\//;
-//   const match = url.match(regex);
-//   const problemId = match ? match[1] : null;
-//   console.log(url);
-//   console.log(problemId);
-
-//   if (problemId) {
-//     // Add event listener to "Get Hint" button
-//     getHintButton.addEventListener("click", () => {
-//       // Check if user is logged in
-//       if (auth.currentUser) {
-//         const hintRef = firebase.firestore().collection("hints").doc(problemId);
-//         hintRef
-//           .get()
-//           .then((doc) => {
-//             if (doc.exists) {
-//               const hints = doc.data().hints;
-//               hintContainer.innerHTML = "";
-//               hints.forEach((hint, index) => {
-//                 const hintDiv = document.createElement("div");
-//                 hintDiv.classList.add("hint");
-//                 const hintNumber = document.createElement("span");
-//                 hintNumber.classList.add("hint-number");
-//                 hintNumber.textContent = `${index + 1}.`;
-//                 const hintText = document.createElement("span");
-//                 hintText.classList.add("hint-text");
-//                 hintText.textContent = hint.text;
-//                 const hintScore = document.createElement("span");
-//                 hintScore.classList.add("hint-score");
-//                 hintScore.textContent = hint.score;
-//                 hintDiv.appendChild(hintNumber);
-//                 hintDiv.appendChild(hintText);
-//                 hintDiv.appendChild(hintScore);
-
-//                 hintContainer.appendChild(hintDiv);
-//               });
-//             } else {
-//               // Hint does not exist, ask user to add hint
-//               const addHint = confirm(
-//                 "No hint available for this problem. Do you want to add a hint?"
-//               );
-//               if (addHint) {
-//                 const hint = prompt("Enter hint:");
-//                 // Check if hint is not empty
-//                 if (hint) {
-//                   // Add hint to Firestore
-//                   hintRef
-//                     .set({
-//                       hints: [{ text: hint, score: 0 }],
-//                     })
-//                     .then(() => {
-//                       const hintDiv = document.createElement("div");
-//                       hintDiv.classList.add("hint");
-//                       const hintNumber = document.createElement("span");
-//                       hintNumber.classList.add("hint-number");
-//                       hintNumber.textContent = "1. ";
-//                       const hintText = document.createElement("span");
-//                       hintText.classList.add("hint-text");
-//                       hintText.textContent = hint;
-//                       hintDiv.appendChild(hintNumber);
-//                       hintDiv.appendChild(hintText);
-//                       hintContainer.appendChild(hintDiv);
-//                     })
-//                     .catch((error) => {
-//                       console.error("Error adding hint:", error);
-//                     });
-//                 }
-//               }
-//             }
-//           })
-//           .catch((error) => {
-//             console.error("Error retrieving hint:", error);
-//           });
-//       } else {
-//         // Display login button if user is not logged in
-//         hintContainer.innerHTML = "";
-//         hintContainer.appendChild(loginButton);
-//       }
-//     });
-
-//     loginButton.addEventListener("click", () => {
-//       auth
-//         .signInAnonymously()
-//         .then(() => {
-//           console.log("Logged in anonymously");
-//           // Remove login button from DOM once user logs in
-//           loginButton.remove();
-//         })
-//         .catch((error) => {
-//           console.error("Error logging in:", error);
-//         });
-//     });
-//   } else {
-//     hintContainer.innerHTML =
-//       "Please navigate to a LeetCode problem page to use this extension.";
-//   }
-// });
-
-// firebase.initializeApp({
-//   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-//   authDomain: "leetassist.firebaseapp.com",
-//   projectId: "leetassist",
-// });
-// const auth = firebase.auth();
-// const getHintButton = document.getElementById("getHintButton");
-// const loginButton = document.getElementById("loginButton");
-// const hintContainer = document.getElementById("hintContainer");
-
-// chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//   const url = tabs[0].url;
-//   console.log(url);
-
-//   const regex = /\/problems\/(.+)\//;
-//   const match = url.match(regex);
-//   const problemId = match ? match[1] : null;
-//   console.log(url);
-//   console.log(problemId);
-
-//   if (problemId) {
-//     // Add event listener to "Get Hint" button
-//     getHintButton.addEventListener("click", () => {
-//       // Check if user is logged in
-//       if (auth.currentUser) {
-//         const hintRef = firebase.firestore().collection("hints").doc(problemId);
-//         hintRef
-//           .get()
-//           .then((doc) => {
-//             if (doc.exists) {
-//               const hints = doc.data().hints;
-//               const newHint = { text: "New hint", score: 0 };
-//               // Add new hint object to the existing hints array
-//               hints.push(newHint);
-//               // Update the hints array in Firestore
-//               hintRef.update({ hints: hints })
-//                 .then(() => {
-//                   hintContainer.innerHTML = newHint.text;
-//               hintContainer.innerHTML = hints[0].text;
-
-//                 })
-//                 .catch((error) => {
-//                   console.error("Error updating hint:", error);
-//                 });
-
-//             } else {
-//               // Hint does not exist, ask user to add hint
-//               const addHint = confirm(
-//                 "No hint available for this problem. Do you want to add a hint?"
-//               );
-//               if (addHint) {
-//                 const hint = prompt("Enter hint:");
-//                 // Check if hint is not empty
-//                 if (hint) {
-//                   // Add hint to Firestore
-//                   hintRef
-//                     .set({
-//                       hints: [
-//                         { text: hint, score: 0, userId: auth.currentUser.uid },
-//                       ],
-//                     })
-//                     .then(() => {
-//                       hintContainer.innerHTML = hint;
-//                     })
-//                     .catch((error) => {
-//                       console.error("Error adding hint:", error);
-//                     });
-//                 }
-//               }
-//             }
-//           })
-//           .catch((error) => {
-//             console.error("Error retrieving hint:", error);
-//           });
-//       } else {
-//         // Display login button if user is not logged in
-//         hintContainer.innerHTML = "";
-//         hintContainer.appendChild(loginButton);
-//       }
-//     });
-//     loginButton.addEventListener("click", () => {
-//       auth
-//         .signInAnonymously()
-//         .then(() => {
-//           console.log("Logged in anonymously");
-//           // Remove login button from DOM once user logs in
-//           loginButton.remove();
-//         })
-//         .catch((error) => {
-//           console.error("Error logging in:", error);
-//         });
-//     });
-//   } else {
-//     hintContainer.innerHTML =
-//       "Please navigate to a LeetCode problem page to use this extension.";
-//   }
-// });

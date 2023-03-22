@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>LeetAssist</title>
+    <title>GeekAssist</title>
     <style>
       body { 
         width: 300px; 
-        height: 300px; 
+        /* height: 300px;  */
         text-align: center;     
         display: flex;
         flex-direction: column;
@@ -16,7 +16,7 @@
         margin: 0 0 10px; 
       }
       #paragraph { 
-        margin: 0;
+        /* margin: 0; */
         font-size: medium;
       }
       .hint { 
@@ -52,24 +52,80 @@
       }
       #addHintButton{
         width: fit-content;
-    align-self: center;
-    margin-top: inherit;
+      align-self: center;
+      margin-top: inherit;
       }
+
+
+      #paragraph_Prerequisites { 
+        margin-top: 30px;
+        font-size: medium;
+      }
+      .prerequisite { 
+        margin-bottom: 20px;
+       }
+      .problemId { 
+        font-weight: bold; 
+      }
+      #getPrerequisitesButton{
+        align-self: center;
+        margin-top: inherit;
+        margin-bottom: 50px;
+      }
+      .prerequisite-up-button{
+        margin-left: 5px;
+      }
+      .prerequisite-down-button{
+        margin-left: 5px;
+
+      }
+      #prerequisitesContainer {
+        margin-top: inherit;
+        font-size: medium;
+        text-align: left;
+        margin-bottom: inherit;
+      }
+      .prerequisite-text {
+        margin-bottom: 5px;
+      }
+      .prerequisite-score {
+        /* font-size: small; */
+        margin-left: 5px;
+        color: green;
+        font-weight: 500;
+      }
+      #addPrerequisitesButton{
+        width: fit-content;
+        align-self: center;
+        margin-top: inherit;
+        margin-bottom: 50px;
+      }
+
+
       #loginButton{
         margin-top: inherit;
-    width: fit-content;
-    align-self: center;
+        width: fit-content;
+        align-self: center;
       }
     </style>
   </head>
   <body>
-    <h1 id = "heading">LeetAssist</h1>
+    <h1 id = "heading">GeekAssist</h1>
     <p id = "paragraph">Click on "Get Hint" to get hint</p>
     <button id="getHintButton">Get Hint</button>
     <button id="loginButton">Login</button>
 
     <div id="hintContainer"></div>
     <button id="addHintButton">Add Hint</button>
+
+    <vr style="height: 1px;margin-top: 30px;background-color: #25b4d0;"></vr>
+    <!-- prerequisites -->
+    <p id = "paragraph_Prerequisites">Click on "Get Prerequisites" to get Prerequisites Questions</p>
+
+    <button id="getPrerequisitesButton">Get Prerequisites</button>
+    <div id="prerequisitesContainer"></div>
+    <button id="addPrerequisitesButton">Add Prerequisites</button>
+
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-firestore.js"></script>

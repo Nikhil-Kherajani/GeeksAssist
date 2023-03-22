@@ -4,9 +4,9 @@ import "firebase/firestore";
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-  authDomain: "leetassist.firebaseapp.com",
-  projectId: "leetassist",
-  storageBucket: "leetassist.appspot.com",
+  authDomain: "GeeksAssist.firebaseapp.com",
+  projectId: "GeeksAssist",
+  storageBucket: "GeeksAssist.appspot.com",
   messagingSenderId: "622279187411",
   appId: "1:622279187411:web:d519eff4eec1ed75132d26",
   measurementId: "G-1H3ZK4ZSS8",
@@ -46,9 +46,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // // Initialize Firebase
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-//   authDomain: "leetassist.firebaseapp.com",
-//   projectId: "leetassist",
-//   storageBucket: "leetassist.appspot.com",
+//   authDomain: "GeeksAssist.firebaseapp.com",
+//   projectId: "GeeksAssist",
+//   storageBucket: "GeeksAssist.appspot.com",
 //   messagingSenderId: "622279187411",
 //   appId: "1:622279187411:web:d519eff4eec1ed75132d26",
 //   measurementId: "G-1H3ZK4ZSS8",
@@ -87,9 +87,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // // // Initialize the Firebase app
 // // var firebaseConfig = {
 // //   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-// //   authDomain: "leetassist.firebaseapp.com",
-// //   projectId: "leetassist",
-// //   storageBucket: "leetassist.appspot.com",
+// //   authDomain: "GeeksAssist.firebaseapp.com",
+// //   projectId: "GeeksAssist",
+// //   storageBucket: "GeeksAssist.appspot.com",
 // //   messagingSenderId: "622279187411",
 // //   appId: "1:622279187411:web:d519eff4eec1ed75132d26",
 // //   measurementId: "G-1H3ZK4ZSS8",
@@ -99,8 +99,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // // // // Initialize Firebase
 // // // firebase.initializeApp({
 // // //   apiKey: "AIzaSyDyxGC9d2Q-sVJz8Qq7k6hOmF4ldR-dckQ",
-// // //   authDomain: "leetassist.firebaseapp.com",
-// // //   projectId: "leetassist",
+// // //   authDomain: "GeeksAssist.firebaseapp.com",
+// // //   projectId: "GeeksAssist",
 // // // });
 
 // // // Listen for messages from the content script
